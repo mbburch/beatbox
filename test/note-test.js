@@ -13,4 +13,21 @@ describe('Note', function () {
     let note = new Note(5000);
     assert.equal(note.hit, false);
   });
+
+  it('should be able to be hit', function () {
+    let note = new Note(5000);
+    note.strike(4000);
+    assert.equal(note.hit, true);
+  });
+
+  it('shouldn\'t have a score by default', function () {
+    let note = new Note(5000);
+    assert.equal(note.score, undefined);
+  });
+
+  it('should have a score after being hit', function () {
+    let note = new Note(5000);
+    note.strike(4000);
+    assert.equal(note.score, 1000);
+  });
 });
