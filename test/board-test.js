@@ -18,10 +18,8 @@ describe('Board', function () {
   it('knows the start time', function () {
     let board = new Board();
     var now = Date.now();
-    setTimeout (function () {
-      board.start();
-      assert.isAbove(board.startTime, now);
-      assert.isBelow(board.startTime - 100, now);
-    }, 1);
+    board.start();
+    assert.isAbove(board.startTime,       now - 1);
+    assert.isBelow(board.startTime - 100, now);
   });
 });
