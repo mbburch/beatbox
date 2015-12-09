@@ -46,9 +46,8 @@ describe('Board', function () {
 
     it('can create a note for each offset in song array', function () {
       let board = new Board();
-      board.start();
       let songLength = board.song.length;
-      board.buildSong();
+      board.start();
       assert.isAbove(board.notes.length, 0);
       assert.equal(board.notes.length, songLength);
       console.log(board.notes, board.notes[0].targetTime, board.song);
@@ -62,4 +61,16 @@ describe('Board', function () {
 
   });
 
+  it('can determine that game has not ended', function () {
+    let board = new Board();
+    board.start();
+    assert.equal(board.ended(), false);
+  });
+
+  it('can determine that game has ended', function () {
+    let board = new Board();
+    board.start();
+    var endedTime = board.startTime + 6000;
+    assert.equal(board.ended(endedTime), true);
+  });
 });
