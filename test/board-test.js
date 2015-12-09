@@ -22,4 +22,11 @@ describe('Board', function () {
     assert.isAbove(board.startTime,       now - 1);
     assert.isBelow(board.startTime - 100, now);
   });
+
+  it('can create a note from an offset', function () {
+    let board = new Board();
+    board.start();
+    let note = board.newNote(5000);
+    assert.equal(note.targetTime, (board.startTime + 5000));
+  });
 });
