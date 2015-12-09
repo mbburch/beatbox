@@ -51,7 +51,7 @@ describe('Board', function () {
       board.buildSong();
       assert.isAbove(board.notes.length, 0);
       assert.equal(board.notes.length, songLength);
-      console.log(board.notes, board.song)
+      console.log(board.notes, board.notes[0].targetTime, board.song);
     });
 
     it('should be able to add a note to note array', function () {
