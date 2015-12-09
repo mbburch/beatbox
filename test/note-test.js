@@ -4,9 +4,9 @@ const assert = chai.assert;
 const Note = require('../lib/note');
 
 describe('Note', function () {
-  it('should have an offset', function () {
+  it('should have an target time', function () {
     let note = new Note(5000);
-    assert.equal(note.offset, 5000);
+    assert.equal(note.targetTime, 5000);
   });
 
   it('shouldn\'t have been hit by default', function () {
