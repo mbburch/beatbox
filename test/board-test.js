@@ -19,7 +19,7 @@ describe('Board', function () {
     let board = new Board();
     var now = Date.now();
     board.start();
-    assert.isAbove(board.startTime,       now - 1);
+    assert.isAbove(board.startTime, now - 1);
     assert.isBelow(board.startTime - 100, now);
   });
 

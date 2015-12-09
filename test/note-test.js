@@ -41,5 +41,6 @@ describe('Note', function () {
   it('should be included in the board\'s array of notes', function () {
     let note = new Note(this.board, 5000);
     assert.include(this.board.notes, note);
+    assert.equal(this.board.notes.length, 1);
   });
 });
