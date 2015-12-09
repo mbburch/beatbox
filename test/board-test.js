@@ -28,6 +28,12 @@ describe('Board', function () {
     assert.isArray(board.notes);
   });
 
+  it('should instantiate with a song array of offsets', function () {
+    let board = new Board();
+    assert.isArray(board.song);
+    assert.isAbove(board.song.length, 0);
+  });
+
   describe('addNote', function () {
 
     it('creates target time from offset', function () {
@@ -36,6 +42,16 @@ describe('Board', function () {
       let note = board.addNote(1000);
       var targetTime = (board.startTime + 1000);
       assert.equal(note.targetTime, targetTime);
+    });
+
+    it('can create a note for each offset in song array', function () {
+      let board = new Board();
+      board.start();
+      let songLength = board.song.length;
+      board.buildSong();
+      assert.isAbove(board.notes.length, 0);
+      assert.equal(board.notes.length, songLength);
+      console.log(board.notes, board.song)
     });
 
     it('should be able to add a note to note array', function () {
