@@ -22,4 +22,21 @@ describe('Board', function () {
     assert.isAbove(board.startTime,       now - 1);
     assert.isBelow(board.startTime - 100, now);
   });
+
+  it('should start out with an empty array of notes', function () {
+    let board = new Board();
+    assert.isArray(board.notes);
+  });
+
+  describe('addNote', function () {
+
+    it('should be able to add a note to note array', function () {
+      let board = new Board();
+      let note = board.addNote(1000);
+      assert.include(board.notes, note);
+      assert.equal(note.offset, 1000);
+    });
+
+  });
+
 });
