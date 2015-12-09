@@ -48,7 +48,8 @@ describe('Note', function () {
     this.board.start();
     let time = (this.board.startTime + 1000)
     let note = new Note(this.board, time);
-    assert.equal(note.y(), 360);
+    assert.isAbove(note.y(), 359);
+    assert.isBelow(note.y(), 361);
   });
 
   it('generates another y coordinate from time', function () {
@@ -56,5 +57,33 @@ describe('Note', function () {
     let time = (this.board.startTime)
     let note = new Note(this.board, time);
     assert.equal(note.y(), 180);
+  });
+
+  it('should know if it should render', function () {
+    this.board.start();
+    let time = (this.board.startTime + 2500)
+    let note = new Note(this.board, time);
+    assert.equal(note.renderable(), true);
+  });
+
+  it('should know to render if slightly past target', function () {
+    this.board.start();
+    let time = (this.board.startTime + -500)
+    let note = new Note(this.board, time);
+    assert.equal(note.renderable(), true);
+  });
+
+  it('should know if it shouldn\'t render yet', function () {
+    this.board.start();
+    let time = (this.board.startTime + 3500);
+    let note = new Note(this.board, time);
+    assert.equal(note.renderable(), false);
+  });
+
+  it('should know if it shouldn\'t render any more', function () {
+    this.board.start();
+    let time = (this.board.startTime + -1500);
+    let note = new Note(this.board, time);
+    assert.equal(note.renderable(), false);
   });
 });
