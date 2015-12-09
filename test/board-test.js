@@ -30,11 +30,18 @@ describe('Board', function () {
 
   describe('addNote', function () {
 
+    it('creates target time from offset', function () {
+      let board = new Board();
+      board.start();
+      let note = board.addNote(1000);
+      var targetTime = (board.startTime + 1000);
+      assert.equal(note.targetTime, targetTime);
+    });
+
     it('should be able to add a note to note array', function () {
       let board = new Board();
       let note = board.addNote(1000);
       assert.include(board.notes, note);
-      assert.equal(note.offset, 1000);
     });
 
   });
