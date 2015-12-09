@@ -43,4 +43,18 @@ describe('Note', function () {
     assert.include(this.board.notes, note);
     assert.equal(this.board.notes.length, 1);
   });
+
+  it('generates a y coordinate from time', function () {
+    this.board.start();
+    let time = (this.board.startTime + 1000)
+    let note = new Note(this.board, time);
+    assert.equal(note.y(), 360);
+  });
+
+  it('generates another y coordinate from time', function () {
+    this.board.start();
+    let time = (this.board.startTime)
+    let note = new Note(this.board, time);
+    assert.equal(note.y(), 180);
+  });
 });
