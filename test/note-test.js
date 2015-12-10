@@ -38,6 +38,11 @@ describe('Note', function () {
     assert.equal(note.score, 1000);
   });
 
+  it('should change appearance when hit', function () {
+    let note = new Note(this.board, 5000);
+    note.strike(4000);
+  });
+
   it('should be included in the board\'s array of notes', function () {
     let note = new Note(this.board, 5000);
     assert.include(this.board.notes, note);
