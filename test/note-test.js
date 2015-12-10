@@ -97,7 +97,7 @@ describe('Note', function () {
 
   it('should know how to render if slightly past target', function () {
     this.board.start();
-    let time = (this.board.startTime + -500)
+    let time = (this.board.startTime + -300)
     let note = new Note(this.board, time);
     assert.equal(note.renderable(), true);
     note.dead();
