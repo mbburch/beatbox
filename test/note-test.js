@@ -77,7 +77,8 @@ describe('Note', function () {
   it('should know how it should render if active note', function () {
     this.board.start();
     let time = (this.board.startTime + 2500)
-    let note = new Note(this.board, time);
+    new Note(this.board, time);
+    let note = this.board.activeNote();
     note.active();
     assert.equal(note.color, 'green');
     assert.equal(note.size, 15);
