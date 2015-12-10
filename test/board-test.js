@@ -61,6 +61,14 @@ describe('Board', function () {
 
   });
 
+  it('can find and hit a note', function () {
+    let board = new Board();
+    board.start();
+    assert.equal(board.notes[0].hit, false);
+    board.play();
+    assert.equal(board.notes[0].hit, true);
+  });
+
   it('can determine that game has not ended', function () {
     let board = new Board();
     board.start();
