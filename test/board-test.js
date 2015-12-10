@@ -41,7 +41,8 @@ describe('Board', function () {
       board.start();
       let note = board.addNote(1000);
       var targetTime = (board.startTime + 1000);
-      assert.equal(note.targetTime, targetTime);
+      assert.isAbove(note.targetTime, targetTime-2);
+      assert.isBelow(note.targetTime, targetTime+2);
     });
 
     it('can create a note for each offset in song array', function () {
@@ -86,6 +87,7 @@ describe('Board', function () {
     let board = new Board();
     board.start();
     board.notes[0].strike();
-    assert.equal(board.score(), 1000);
+    assert.isAbove(board.score(), 1000-2);
+    assert.isBelow(board.score(), 1000+2);
   });
 });
