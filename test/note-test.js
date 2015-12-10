@@ -13,7 +13,8 @@ describe('Note', function () {
 
   it('should have an targetTime', function () {
     let note = new Note(this.board, 5000);
-    assert.equal(note.targetTime, 5000);
+    assert.isAbove(note.targetTime, 5000-2);
+    assert.isBelow(note.targetTime, 5000+2);
   });
 
   it('shouldn\'t have been hit by default', function () {
@@ -35,7 +36,8 @@ describe('Note', function () {
   it('should have a score after being hit', function () {
     let note = new Note(this.board, 5000);
     note.strike(4000);
-    assert.equal(note.score, 1000);
+    assert.isAbove(note.score, 1000-2);
+    assert.isBelow(note.score, 1000+2);
   });
 
   it('should change appearance when hit', function () {
@@ -53,15 +55,16 @@ describe('Note', function () {
     this.board.start();
     let time = (this.board.startTime + 1000)
     let note = new Note(this.board, time);
-    assert.isAbove(note.y(), 359);
-    assert.isBelow(note.y(), 361);
+    assert.isAbove(note.y(), 360-2);
+    assert.isBelow(note.y(), 360+2);
   });
 
   it('generates another y coordinate from time', function () {
     this.board.start();
     let time = (this.board.startTime)
     let note = new Note(this.board, time);
-    assert.equal(note.y(), 180);
+    assert.isAbove(note.y(), 180-2);
+    assert.isBelow(note.y(), 180+2);
   });
 
   it('should know if it should render', function () {
