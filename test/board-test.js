@@ -25,6 +25,11 @@ describe('Board', function () {
 
   it('should start out with an empty array of notes', function () {
     let board = new Board();
+    board.start();
+    assert.equal(board.notes.length, 5);
+    board.end();
+    board.start();
+    assert.equal(board.notes.length, 5);
     assert.isArray(board.notes);
   });
 
