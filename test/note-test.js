@@ -74,7 +74,7 @@ describe('Note', function () {
     assert.equal(note.renderable(), true);
   });
 
-  it('should know how it should render', function () {
+  it('should know how it should render if struck', function () {
     this.board.start();
     let time = (this.board.startTime + 2500)
     let note = new Note(this.board, time);
@@ -85,11 +85,15 @@ describe('Note', function () {
     assert.equal(note.size, 20);
   });
 
-  it('should know to render if slightly past target', function () {
+  it('should know how to render if slightly past target', function () {
     this.board.start();
     let time = (this.board.startTime + -500)
     let note = new Note(this.board, time);
     assert.equal(note.renderable(), true);
+    note.dead();
+    assert.equal(note.color, 'gray');
+    assert.equal(note.size, 10);
+    assert.equal(note.hit, 'dead');
   });
 
   it('should know if it shouldn\'t render yet', function () {
