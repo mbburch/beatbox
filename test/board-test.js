@@ -73,4 +73,11 @@ describe('Board', function () {
     var endedTime = board.startTime + 6000;
     assert.equal(board.ended(endedTime), true);
   });
+
+  it('can get total score', function () {
+    let board = new Board();
+    board.start();
+    board.notes[0].strike();
+    assert.equal(board.score(), 1000);
+  });
 });
