@@ -74,6 +74,15 @@ describe('Note', function () {
     assert.equal(note.renderable(), true);
   });
 
+  it('should know how it should render if active note', function () {
+    this.board.start();
+    let time = (this.board.startTime + 2500)
+    let note = new Note(this.board, time);
+    note.active();
+    assert.equal(note.color, 'green');
+    assert.equal(note.size, 15);
+  });
+
   it('should know how it should render if struck', function () {
     this.board.start();
     let time = (this.board.startTime + 2500)

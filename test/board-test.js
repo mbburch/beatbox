@@ -67,8 +67,6 @@ describe('Board', function () {
 
   });
 
-
-
   it('can find and hit a note', function () {
     let board = new Board();
     board.start();
