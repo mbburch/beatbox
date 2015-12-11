@@ -24,6 +24,7 @@ body {
   height: 50px;
   background-color: #C41986;
   border: 1 px solid black;
+  border-radius: 20px;
   font-family: inherit;
   font-size: 30px;
   color: white;
@@ -45,6 +46,8 @@ body {
 
 .how-to {
   border: 10px white;
+  border-radius: 20px;
+  text-align: center;
   background-color: black;
   opacity: 1;
   width: 300px;
@@ -58,6 +61,7 @@ body {
 
 .scoreboard {
   border: 10px white;
+  border-radius: 20px;
   background-color: white;
   width: 180px;
   height: 100px;
