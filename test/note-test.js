@@ -34,8 +34,8 @@ describe('Note', function () {
   });
 
   it('should have a score after being hit', function () {
-    let note = new Note(this.board, 5000);
-    note.strike(5000);
+    let note = new Note(this.board, Date.now());
+    note.strike(20);
     assert.equal(note.score, 3);
   });
 
@@ -85,7 +85,7 @@ describe('Note', function () {
 
   it('should know how it should render if struck', function () {
     this.board.start();
-    let time = (this.board.startTime + 2500)
+    let time = (this.board.startTime + 20)
     let note = new Note(this.board, time);
     assert.equal(note.color, 'black');
     assert.equal(note.size, 10);
@@ -131,5 +131,19 @@ describe('Note', function () {
     note_2.strike();
     assert.equal(note_2.color, 'gold');
     assert.equal(note.score, 3);
+  });
+
+  it('should be blue if hit within 50 milliseconds of goal', function () {
+    this.board.start();
+
+    let note = new Note(this.board, Date.now() + 45);
+    note.strike();
+    assert.equal(note.color, 'blue');
+    assert.equal(note.score, 1);
+
+    let note_2 = new Note(this.board, Date.now() - 45);
+    note_2.strike();
+    assert.equal(note_2.color, 'blue');
+    assert.equal(note.score, 1);
   });
 });

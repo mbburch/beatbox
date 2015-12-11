@@ -2,6 +2,7 @@ const chai = require('chai');
 const assert = chai.assert;
 
 const Board = require('../lib/board');
+const Note = require('../lib/note');
 
 describe('Board', function () {
   it('should know whether the song has started', function () {
@@ -90,8 +91,10 @@ describe('Board', function () {
 
   it('can get total score', function () {
     let board = new Board();
-    board.start();
-    board.notes[0].strike();
-    assert.equal(board.score(), 3);
+    var note = new Note(board, Date.now() + 20);
+    var note_2 = new Note(board, Date.now() + 30);
+    note.strike();
+    note_2.strike();
+    assert.equal(board.score(), 4)
   });
 });
