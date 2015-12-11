@@ -27,10 +27,10 @@ describe('Board', function () {
   it('should start out with an empty array of notes', function () {
     let board = new Board();
     board.start();
-    assert.equal(board.notes.length, 11);
+    assert.equal(board.notes.length, 12);
     board.end();
     board.start();
-    assert.equal(board.notes.length, 11);
+    assert.equal(board.notes.length, 12);
     assert.isArray(board.notes);
   });
 
@@ -101,6 +101,6 @@ describe('Board', function () {
   it('can get best possible score', function () {
     let board = new Board();
     board.start();
-    assert.equal(board.perfectScore(), 33);
+    assert.equal(board.perfectScore(), board.notes.length * 3);
   });
 });
