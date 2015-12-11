@@ -79,7 +79,6 @@ describe('Note', function () {
     new Note(this.board, time);
     let note = this.board.activeNote();
     note.active();
-    assert.equal(note.color, 'green');
     assert.equal(note.size, 15);
   });
 
