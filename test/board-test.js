@@ -2,6 +2,7 @@ const chai = require('chai');
 const assert = chai.assert;
 
 const Board = require('../lib/board');
+const Note = require('../lib/note');
 
 describe('Board', function () {
   it('should know whether the song has started', function () {
@@ -26,10 +27,10 @@ describe('Board', function () {
   it('should start out with an empty array of notes', function () {
     let board = new Board();
     board.start();
-    assert.equal(board.notes.length, 5);
+    assert.equal(board.notes.length, 11);
     board.end();
     board.start();
-    assert.equal(board.notes.length, 5);
+    assert.equal(board.notes.length, 11);
     assert.isArray(board.notes);
   });
 
@@ -84,15 +85,22 @@ describe('Board', function () {
   it('can determine that game has ended', function () {
     let board = new Board();
     board.start();
-    var endedTime = board.startTime + 6000;
+    var endedTime = board.startTime + 10000;
     assert.equal(board.ended(endedTime), true);
   });
 
   it('can get total score', function () {
     let board = new Board();
+    var note = new Note(board, Date.now() + 20);
+    var note_2 = new Note(board, Date.now() + 30);
+    note.strike();
+    note_2.strike();
+    assert.equal(board.score(), 4)
+  });
+
+  it('can get best possible score', function () {
+    let board = new Board();
     board.start();
-    board.notes[0].strike();
-    assert.isAbove(board.score(), 1000-2);
-    assert.isBelow(board.score(), 1000+2);
+    assert.equal(board.perfectScore(), 33);
   });
 });
