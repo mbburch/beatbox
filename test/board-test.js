@@ -97,4 +97,10 @@ describe('Board', function () {
     note_2.strike();
     assert.equal(board.score(), 4)
   });
+
+  it('can get best possible score', function () {
+    let board = new Board();
+    board.start();
+    assert.equal(board.perfectScore(), 33);
+  });
 });
