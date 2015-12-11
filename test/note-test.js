@@ -100,9 +100,9 @@ describe('Note', function () {
     let note = new Note(this.board, time);
     assert.equal(note.renderable(), true);
     note.dead();
-    assert.equal(note.color, 'gray');
+    assert.equal(note.color, 'red');
     assert.equal(note.size, 10);
-    assert.equal(note.hit, 'dead');
+    assert(note.hit);
   });
 
   it('should know if it shouldn\'t render yet', function () {
@@ -145,5 +145,28 @@ describe('Note', function () {
     note_2.strike();
     assert.equal(note_2.color, 'blue');
     assert.equal(note.score, 1);
+  });
+
+  it('misses if more than 50 milliseconds away from target', function () {
+    this.board.start();
+
+    let note = new Note(this.board, Date.now() + 55);
+    note.strike();
+    assert.equal(note.color, 'red');
+    assert.equal(note.score, 0);
+
+    let note_2 = new Note(this.board, Date.now() - 55);
+    note_2.strike();
+    assert.equal(note_2.color, 'red');
+    assert.equal(note.score, 0);
+  });
+
+  it('shouldn\'t be killable if already hit', function () {
+    this.board.start();
+
+    let note = new Note(this.board, Date.now());
+    note.strike();
+    note.dead(200);
+    assert.equal(note.color, 'gold');
   });
 });
