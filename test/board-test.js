@@ -26,10 +26,10 @@ describe('Board', function () {
   it('should start out with an empty array of notes', function () {
     let board = new Board();
     board.start();
-    assert.equal(board.notes.length, 5);
+    assert.equal(board.notes.length, 11);
     board.end();
     board.start();
-    assert.equal(board.notes.length, 5);
+    assert.equal(board.notes.length, 11);
     assert.isArray(board.notes);
   });
 
@@ -84,7 +84,7 @@ describe('Board', function () {
   it('can determine that game has ended', function () {
     let board = new Board();
     board.start();
-    var endedTime = board.startTime + 6000;
+    var endedTime = board.startTime + 10000;
     assert.equal(board.ended(endedTime), true);
   });
 
@@ -92,7 +92,7 @@ describe('Board', function () {
     let board = new Board();
     board.start();
     board.notes[0].strike();
-    assert.isAbove(board.score(), 1000-2);
-    assert.isBelow(board.score(), 1000+2);
+    assert.isAbove(board.score(), 3000-2);
+    assert.isBelow(board.score(), 3000+2);
   });
 });
