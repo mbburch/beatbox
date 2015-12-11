@@ -21,11 +21,11 @@ body {
 #game-start {
   padding: 10px;
   width: 180px;
-  height: 40px;
+  height: 50px;
   background-color: #C41986;
   border: 1 px solid black;
   font-family: inherit;
-  font-size: 20px;
+  font-size: 30px;
   color: white;
 }
 
