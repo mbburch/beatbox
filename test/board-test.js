@@ -1,5 +1,6 @@
 const chai = require('chai');
 const assert = chai.assert;
+const _ = require('lodash');
 
 const Board = require('../lib/board');
 const Note = require('../lib/note');
@@ -34,12 +35,6 @@ describe('Board', function () {
     assert.isAbove(noteLength, 1);
   });
 
-  it('should instantiate with a song array of offsets', function () {
-    let board = new Board();
-    assert.isArray(board.song.left);
-    assert.isAbove(board.song.left.length, 0);
-  });
-
   describe('addNote', function () {
 
     it('creates target time from offset', function () {
@@ -53,9 +48,9 @@ describe('Board', function () {
 
     it('can create a note for each offset in song array', function () {
       let board = new Board();
-      let leftSongLength = board.song.left.length;
-      let middleSongLength = board.song.middle.length;
-      let rightSongLength = board.song.right.length;
+      let leftSongLength = board.song.left.replace(/\s/g, '').length;
+      let middleSongLength = board.song.middle.replace(/\s/g, '').length;
+      let rightSongLength = board.song.right.replace(/\s/g, '').length;
       board.start();
       assert.isAbove(board.notes.left.length, 0);
       assert.isAbove(board.notes.middle.length, 0);
@@ -90,7 +85,7 @@ describe('Board', function () {
   it('can determine that game has ended', function () {
     let board = new Board();
     board.start();
-    var endedTime = board.startTime + 10000;
+    var endedTime = Date.now() + 10000;
     assert.equal(board.ended(endedTime), true);
   });
 
