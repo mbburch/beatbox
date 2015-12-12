@@ -2,18 +2,36 @@
 <html>
 <head>
   <meta charset="utf-8">
+  <link href='https://fonts.googleapis.com/css?family=VT323' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="style.css">
   <title>Game Time</title>
 </head>
 <body>
-
-  <canvas id="game"
-          class="game-canvas"
-          width="360px"
-          height="720px"
-          style="border:1px solid magenta">
-  </canvas>
-  <button id="game-start">Start Game</button>
-  <p id="score"></p>
+  <container>
+    <div class="row">
+      <div class="col-4 instructions">
+        <h1>Beat Box</h1>
+        <h2>Instructions:</h2>
+        <div class="how-to">
+          <h3>Hit "A" when the note reaches the target to test your rockstar chops</h3>
+        </div>
+      </div>
+      <div class="col-4 game-board">
+        <canvas id="game"
+                class="game-canvas"
+                width="360px"
+                height="720px"
+                style="border:1px solid black">
+        </canvas>
+      </div>
+      <div class="col-4 info">
+        <button id="game-start">Start Game</button>
+        <div class="scoreboard">
+          <h2 id="score">Score: </h2>
+        </div>
+      </div>
+    </div>
+  </container>
   <script src="main.bundle.js"></script>
 </body>
 </html>

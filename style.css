@@ -1,3 +1,74 @@
-.game-canvas {
-  border: 1px dashed;
+* {
+    box-sizing: border-box;
 }
+
+body {
+    background-image: url("https://static.pexels.com/photos/2143/lights-party-dancing-music.jpg");
+    background-size: cover;
+    font-family: 'VT323', sans-serif;
+}
+
+.col-4 {
+  width: 33.33%;
+  float: left;
+  padding: 15px;
+}
+
+.game-canvas {
+  background-color: white;
+}
+
+#game-start {
+  padding: 10px;
+  width: 180px;
+  height: 50px;
+  background-color: #C41986;
+  border: 1 px solid black;
+  border-radius: 20px;
+  font-family: inherit;
+  font-size: 30px;
+  color: white;
+}
+
+.instructions {
+  color: white;
+}
+
+.instructions h1 {
+  font-size: 5em;
+  text-shadow: 0 0 0.2em #C41986, 0 0 0.2em #C41986;
+}
+
+.instructions h2{
+  font-size: 2em;
+  text-shadow: 0 0 0.2em #C41986, 0 0 0.2em #C41986;
+}
+
+.how-to {
+  border: 10px white;
+  border-radius: 20px;
+  text-align: center;
+  background-color: black;
+  opacity: 1;
+  width: 300px;
+  height: 300px;
+}
+
+.how-to h3 {
+  color: white;
+  opacity: 0.99;
+}
+
+.scoreboard {
+  border: 10px white;
+  border-radius: 20px;
+  background-color: white;
+  width: 180px;
+  height: 100px;
+}
+
+#score {
+  color: #C41986;
+  text-align: center;
+}
+
