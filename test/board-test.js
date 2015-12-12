@@ -1,5 +1,6 @@
 const chai = require('chai');
 const assert = chai.assert;
+const _ = require('lodash');
 
 const Board = require('../lib/board');
 const Note = require('../lib/note');
@@ -34,43 +35,29 @@ describe('Board', function () {
     assert.isAbove(noteLength, 1);
   });
 
-  it('should instantiate with a song array of offsets', function () {
+  it('creates an array of notes for each column', function () {
     let board = new Board();
-    assert.isArray(board.song.left);
-    assert.isAbove(board.song.left.length, 0);
+    let leftSongLength = board.song.left.replace(/\s/g, '').length;
+    let middleSongLength = board.song.middle.replace(/\s/g, '').length;
+    let rightSongLength = board.song.right.replace(/\s/g, '').length;
+    board.start();
+    assert.isAbove(board.notes.left.length, 0);
+    assert.isAbove(board.notes.middle.length, 0);
+    assert.isAbove(board.notes.right.length, 0);
+    assert.equal(board.notes.left.length, leftSongLength);
+    assert.equal(board.notes.middle.length, middleSongLength);
+    assert.equal(board.notes.right.length, rightSongLength);
   });
 
-  describe('addNote', function () {
-
-    it('creates target time from offset', function () {
+  describe('createNote', function () {
+    it('creates a note from offset', function () {
       let board = new Board();
       board.start();
-      let note = board.addNote(1000, "left");
-      var targetTime = (board.startTime + 1000);
+      let note = board.createNote(1000);
+      var targetTime = (Date.now() + 1000);
       assert.isAbove(note.targetTime, targetTime-2);
       assert.isBelow(note.targetTime, targetTime+2);
     });
-
-    it('can create a note for each offset in song array', function () {
-      let board = new Board();
-      let leftSongLength = board.song.left.length;
-      let middleSongLength = board.song.middle.length;
-      let rightSongLength = board.song.right.length;
-      board.start();
-      assert.isAbove(board.notes.left.length, 0);
-      assert.isAbove(board.notes.middle.length, 0);
-      assert.isAbove(board.notes.right.length, 0);
-      assert.equal(board.notes.left.length, leftSongLength);
-      assert.equal(board.notes.middle.length, middleSongLength);
-      assert.equal(board.notes.right.length, rightSongLength);
-    });
-
-    it('should be able to add a note to note array', function () {
-      let board = new Board();
-      let note = board.addNote(1000, "left");
-      assert.include(board.notes.left, note);
-    });
-
   });
 
   it('can find and hit a note', function () {
@@ -90,16 +77,16 @@ describe('Board', function () {
   it('can determine that game has ended', function () {
     let board = new Board();
     board.start();
-    var endedTime = board.startTime + 10000;
+    var endedTime = Date.now() + 10000;
     assert.equal(board.ended(endedTime), true);
   });
 
   it('can get total score', function () {
     let board = new Board();
     board.start();
-    board.notes.left[0] = new Note(board, Date.now() + 20);
+    board.notes.left[0] = new Note(Date.now() + 20);
     board.notes.left[0].strike();
-    assert.equal(board.notes.left[0].score, 3)
+    assert.equal(board.score(), 3)
   });
 
   it('can get best possible score', function () {
@@ -108,5 +95,12 @@ describe('Board', function () {
     sum += board.notes.middle.length;
     sum += board.notes.right.length;
     assert.equal(board.perfectScore(), sum * 3);
+  });
+
+  it('should make notes active if they are first in line', function () {
+    let board = new Board();
+    board.start();
+    let note = board.activeNote("left");
+    assert.equal(note.size, 15);
   });
 });

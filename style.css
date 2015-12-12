@@ -47,7 +47,6 @@ body {
 .how-to {
   border: 10px white;
   border-radius: 20px;
-  text-align: center;
   background-color: black;
   opacity: 1;
   width: 300px;
@@ -55,6 +54,7 @@ body {
 }
 
 .how-to h3 {
+  padding: 10px;
   color: white;
   opacity: 0.99;
 }
