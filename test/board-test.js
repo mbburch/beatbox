@@ -97,9 +97,9 @@ describe('Board', function () {
   it('can get total score', function () {
     let board = new Board();
     board.start();
-    board.notes.left[0] = new Note(board, Date.now() + 20);
+    board.notes.left[0] = new Note(Date.now() + 20);
     board.notes.left[0].strike();
-    assert.equal(board.notes.left[0].score, 3)
+    assert.equal(board.score(), 3)
   });
 
   it('can get best possible score', function () {
@@ -108,5 +108,12 @@ describe('Board', function () {
     sum += board.notes.middle.length;
     sum += board.notes.right.length;
     assert.equal(board.perfectScore(), sum * 3);
+  });
+
+  it('should make notes active if they are first in line', function () {
+    let board = new Board();
+    board.start();
+    let note = board.activeNote("left");
+    assert.equal(note.size, 15);
   });
 });
