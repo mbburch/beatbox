@@ -24,14 +24,14 @@ describe('Board', function () {
     assert.isBelow(board.startTime - 100, now);
   });
 
-  it('should start out with an empty array of notes', function () {
+  it('shouldn\'t keep notes between games', function () {
     let board = new Board();
     board.start();
-    assert.equal(board.notes.length, 12);
+    var noteLength = board.notes.left.length;
     board.end();
     board.start();
-    assert.equal(board.notes.length, 12);
-    assert.isArray(board.notes);
+    assert.equal(board.notes.left.length, noteLength);
+    assert.isAbove(noteLength, 1);
   });
 
   it('should instantiate with a song array of offsets', function () {
