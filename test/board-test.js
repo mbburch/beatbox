@@ -24,20 +24,20 @@ describe('Board', function () {
     assert.isBelow(board.startTime - 100, now);
   });
 
-  it('should start out with an empty array of notes', function () {
+  it('shouldn\'t keep notes between games', function () {
     let board = new Board();
     board.start();
-    assert.equal(board.notes.length, 11);
+    var noteLength = board.notes.left.length;
     board.end();
     board.start();
-    assert.equal(board.notes.length, 11);
-    assert.isArray(board.notes);
+    assert.equal(board.notes.left.length, noteLength);
+    assert.isAbove(noteLength, 1);
   });
 
   it('should instantiate with a song array of offsets', function () {
     let board = new Board();
-    assert.isArray(board.song);
-    assert.isAbove(board.song.length, 0);
+    assert.isArray(board.song.left);
+    assert.isAbove(board.song.left.length, 0);
   });
 
   describe('addNote', function () {
@@ -45,7 +45,7 @@ describe('Board', function () {
     it('creates target time from offset', function () {
       let board = new Board();
       board.start();
-      let note = board.addNote(1000);
+      let note = board.addNote(1000, "left");
       var targetTime = (board.startTime + 1000);
       assert.isAbove(note.targetTime, targetTime-2);
       assert.isBelow(note.targetTime, targetTime+2);
@@ -53,17 +53,22 @@ describe('Board', function () {
 
     it('can create a note for each offset in song array', function () {
       let board = new Board();
-      let songLength = board.song.length;
+      let leftSongLength = board.song.left.length;
+      let middleSongLength = board.song.middle.length;
+      let rightSongLength = board.song.right.length;
       board.start();
-      assert.isAbove(board.notes.length, 0);
-      assert.equal(board.notes.length, songLength);
-      console.log(board.notes, board.notes[0].targetTime, board.song);
+      assert.isAbove(board.notes.left.length, 0);
+      assert.isAbove(board.notes.middle.length, 0);
+      assert.isAbove(board.notes.right.length, 0);
+      assert.equal(board.notes.left.length, leftSongLength);
+      assert.equal(board.notes.middle.length, middleSongLength);
+      assert.equal(board.notes.right.length, rightSongLength);
     });
 
     it('should be able to add a note to note array', function () {
       let board = new Board();
-      let note = board.addNote(1000);
-      assert.include(board.notes, note);
+      let note = board.addNote(1000, "left");
+      assert.include(board.notes.left, note);
     });
 
   });
@@ -71,9 +76,9 @@ describe('Board', function () {
   it('can find and hit a note', function () {
     let board = new Board();
     board.start();
-    assert.equal(board.notes[0].hit, false);
-    board.play();
-    assert.equal(board.notes[0].hit, true);
+    assert.equal(board.notes.left[0].hit, false);
+    board.play("left");
+    assert.equal(board.notes.left[0].hit, true);
   });
 
   it('can determine that game has not ended', function () {
@@ -91,16 +96,17 @@ describe('Board', function () {
 
   it('can get total score', function () {
     let board = new Board();
-    var note = new Note(board, Date.now() + 20);
-    var note_2 = new Note(board, Date.now() + 30);
-    note.strike();
-    note_2.strike();
-    assert.equal(board.score(), 4)
+    board.start();
+    board.notes.left[0] = new Note(board, Date.now() + 20);
+    board.notes.left[0].strike();
+    assert.equal(board.notes.left[0].score, 3)
   });
 
   it('can get best possible score', function () {
     let board = new Board();
-    board.start();
-    assert.equal(board.perfectScore(), 33);
+    var sum = board.notes.left.length;
+    sum += board.notes.middle.length;
+    sum += board.notes.right.length;
+    assert.equal(board.perfectScore(), sum * 3);
   });
 });
