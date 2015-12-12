@@ -35,37 +35,29 @@ describe('Board', function () {
     assert.isAbove(noteLength, 1);
   });
 
-  describe('addNote', function () {
+  it('creates an array of notes for each column', function () {
+    let board = new Board();
+    let leftSongLength = board.song.left.replace(/\s/g, '').length;
+    let middleSongLength = board.song.middle.replace(/\s/g, '').length;
+    let rightSongLength = board.song.right.replace(/\s/g, '').length;
+    board.start();
+    assert.isAbove(board.notes.left.length, 0);
+    assert.isAbove(board.notes.middle.length, 0);
+    assert.isAbove(board.notes.right.length, 0);
+    assert.equal(board.notes.left.length, leftSongLength);
+    assert.equal(board.notes.middle.length, middleSongLength);
+    assert.equal(board.notes.right.length, rightSongLength);
+  });
 
-    it('creates target time from offset', function () {
+  describe('createNote', function () {
+    it('creates a note from offset', function () {
       let board = new Board();
       board.start();
-      let note = board.addNote(1000, "left");
-      var targetTime = (board.startTime + 1000);
+      let note = board.createNote(1000);
+      var targetTime = (Date.now() + 1000);
       assert.isAbove(note.targetTime, targetTime-2);
       assert.isBelow(note.targetTime, targetTime+2);
     });
-
-    it('can create a note for each offset in song array', function () {
-      let board = new Board();
-      let leftSongLength = board.song.left.replace(/\s/g, '').length;
-      let middleSongLength = board.song.middle.replace(/\s/g, '').length;
-      let rightSongLength = board.song.right.replace(/\s/g, '').length;
-      board.start();
-      assert.isAbove(board.notes.left.length, 0);
-      assert.isAbove(board.notes.middle.length, 0);
-      assert.isAbove(board.notes.right.length, 0);
-      assert.equal(board.notes.left.length, leftSongLength);
-      assert.equal(board.notes.middle.length, middleSongLength);
-      assert.equal(board.notes.right.length, rightSongLength);
-    });
-
-    it('should be able to add a note to note array', function () {
-      let board = new Board();
-      let note = board.addNote(1000, "left");
-      assert.include(board.notes.left, note);
-    });
-
   });
 
   it('can find and hit a note', function () {
