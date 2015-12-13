@@ -11,4 +11,9 @@ describe('Column', function () {
     var column = new Column(106);
     assert.equal(106, column.inputButton);
   });
+
+  it('has a x varible', function () {
+    var column = new Column(106, 90);
+    assert.equal(90, column.x);
+  });
 });
