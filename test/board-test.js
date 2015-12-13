@@ -60,23 +60,16 @@ describe('Board', function () {
 
   it('can get total score', function () {
     board.start();
-    board.notes.left[0] = new Note(Date.now() + 20);
-    board.notes.left[0].strike();
-    assert.equal(board.score(), 3)
+    board.columns[0].notes[0] = new Note(Date.now() + 20);
+    board.columns[0].notes[1] = new Note(Date.now() + 30);
+    board.play(board.columns[0].inputButton);
+    board.play(board.columns[0].inputButton);
+    assert.equal(board.score(), 4)
   });
 
   it('can get best possible score', function () {
-    var sum = board.notes.left.length;
-    sum += board.notes.middle.length;
-    sum += board.notes.right.length;
+    var sum = board.getNotes().length;
     assert.equal(board.perfectScore(), sum * 3);
-  });
-
-  it('should make notes active if they are first in line', function () {
-    board.start();
-    let note = board.notes["left"][0];
-    board.activateNotes("left");
-    assert.equal(note.size, 15);
   });
 
   describe('for column', function () {
