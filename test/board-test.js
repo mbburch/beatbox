@@ -5,20 +5,23 @@ const _ = require('lodash');
 const Board = require('../lib/board');
 const Note = require('../lib/note');
 
+let board;
+
+before(function () {
+  board = new Board();
+});
+
 describe('Board', function () {
   it('should know whether the song has started', function () {
-    let board = new Board();
     assert.equal(board.started, false);
   });
 
   it('can start', function () {
-    let board = new Board();
     board.start();
     assert.equal(board.started, true);
   });
 
   it('knows the start time', function () {
-    let board = new Board();
     var now = Date.now();
     board.start();
     assert.isAbove(board.startTime, now - 1);
@@ -26,32 +29,16 @@ describe('Board', function () {
   });
 
   it('shouldn\'t keep notes between games', function () {
-    let board = new Board();
     board.start();
-    var noteLength = board.notes.left.length;
+    var noteLength = board.getNotes().length;
     board.end();
     board.start();
-    assert.equal(board.notes.left.length, noteLength);
+    assert.equal(board.getNotes().length, noteLength);
     assert.isAbove(noteLength, 1);
-  });
-
-  it('creates an array of notes for each column', function () {
-    let board = new Board();
-    let leftSongLength = board.song.left.replace(/\s/g, '').length;
-    let middleSongLength = board.song.middle.replace(/\s/g, '').length;
-    let rightSongLength = board.song.right.replace(/\s/g, '').length;
-    board.start();
-    assert.isAbove(board.notes.left.length, 0);
-    assert.isAbove(board.notes.middle.length, 0);
-    assert.isAbove(board.notes.right.length, 0);
-    assert.equal(board.notes.left.length, leftSongLength);
-    assert.equal(board.notes.middle.length, middleSongLength);
-    assert.equal(board.notes.right.length, rightSongLength);
   });
 
   describe('createNote', function () {
     it('creates a note from offset', function () {
-      let board = new Board();
       board.start();
       let note = board.createNote(1000);
       var targetTime = (Date.now() + 1000);
@@ -60,48 +47,55 @@ describe('Board', function () {
     });
   });
 
-  it('can find and hit a note', function () {
-    let board = new Board();
-    board.start();
-    assert.equal(board.notes.left[0].hit, false);
-    board.play("left");
-    assert.equal(board.notes.left[0].hit, true);
-  });
-
   it('can determine that game has not ended', function () {
-    let board = new Board();
     board.start();
     assert.equal(board.ended(), false);
   });
 
   it('can determine that game has ended', function () {
-    let board = new Board();
     board.start();
     var endedTime = Date.now() + 10000;
     assert.equal(board.ended(endedTime), true);
   });
 
   it('can get total score', function () {
-    let board = new Board();
     board.start();
-    board.notes.left[0] = new Note(Date.now() + 20);
-    board.notes.left[0].strike();
-    assert.equal(board.score(), 3)
+    board.columns[0].notes[0] = new Note(Date.now() + 20);
+    board.columns[0].notes[1] = new Note(Date.now() + 30);
+    board.play(board.columns[0].inputButton);
+    board.play(board.columns[0].inputButton);
+    assert.equal(board.score(), 4)
   });
 
   it('can get best possible score', function () {
-    let board = new Board();
-    var sum = board.notes.left.length;
-    sum += board.notes.middle.length;
-    sum += board.notes.right.length;
+    var sum = board.getNotes().length;
     assert.equal(board.perfectScore(), sum * 3);
   });
 
-  it('should make notes active if they are first in line', function () {
-    let board = new Board();
-    board.start();
-    let note = board.notes["left"][0];
-    board.activateNotes("left");
-    assert.equal(note.size, 15);
+  describe('for column', function () {
+    it('can create from dots', function () {
+      let dots     = ". . . .";
+      let interval = 250;
+      let button   = 106;
+      let xvar     = 90;
+      let time     = board.startTime;
+      let column   = board.createColumn(dots, interval, button, xvar);
+
+      assert.equal(column.notes[0].targetTime, time + 3000);
+    });
+
+    it('can find and hit a note', function () {
+      let dots     = ". . . .";
+      let interval = 250;
+      let button   = 110;
+      let xvar     = 90;
+      let time     = board.startTime;
+      let column   = board.createColumn(dots, interval, button, xvar);
+      board.columns.push(column);
+
+      assert.equal(column.notes[0].hit, false);
+      board.play(column.inputButton);
+      assert.equal(column.notes[0].hit, true);
+    });
   });
 });
