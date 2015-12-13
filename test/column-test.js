@@ -49,4 +49,14 @@ describe('Column', function () {
     assert.equal(note_1.size, 10);
     assert.equal(note_2.size, 15);
   });
+
+  it('can kill notes past the target', function () {
+    var note = new Note(Date.now() - 500);
+    column.notes.unshift(note)
+    assert.equal(note.color, "black");
+    assert.equal(note_1.color, "black");
+    column.killNotes();
+    assert.equal(note.color, "red");
+    assert.equal(note_1.color, "black");
+  });
 });
