@@ -37,19 +37,6 @@ describe('Board', function () {
     assert.isAbove(noteLength, 1);
   });
 
-  it('creates an array of notes for each column', function () {
-    let leftSongLength = board.song.left.replace(/\s/g, '').length;
-    let middleSongLength = board.song.middle.replace(/\s/g, '').length;
-    let rightSongLength = board.song.right.replace(/\s/g, '').length;
-    board.start();
-    assert.isAbove(board.notes.left.length, 0);
-    assert.isAbove(board.notes.middle.length, 0);
-    assert.isAbove(board.notes.right.length, 0);
-    assert.equal(board.notes.left.length, leftSongLength);
-    assert.equal(board.notes.middle.length, middleSongLength);
-    assert.equal(board.notes.right.length, rightSongLength);
-  });
-
   describe('createNote', function () {
     it('creates a note from offset', function () {
       board.start();
@@ -58,13 +45,6 @@ describe('Board', function () {
       assert.isAbove(note.targetTime, targetTime-2);
       assert.isBelow(note.targetTime, targetTime+2);
     });
-  });
-
-  it('can find and hit a note', function () {
-    board.start();
-    assert.equal(board.notes.left[0].hit, false);
-    board.play("left");
-    assert.equal(board.notes.left[0].hit, true);
   });
 
   it('can determine that game has not ended', function () {
@@ -107,7 +87,22 @@ describe('Board', function () {
       let xvar     = 90;
       let time     = board.startTime;
       let column   = board.createColumn(dots, interval, button, xvar);
+
       assert.equal(column.notes[0].targetTime, time + 3000);
+    });
+
+    it('can find and hit a note', function () {
+      let dots     = ". . . .";
+      let interval = 250;
+      let button   = 110;
+      let xvar     = 90;
+      let time     = board.startTime;
+      let column   = board.createColumn(dots, interval, button, xvar);
+      board.columns.push(column);
+
+      assert.equal(column.notes[0].hit, false);
+      board.play(column.inputButton);
+      assert.equal(column.notes[0].hit, true);
     });
   });
 });
