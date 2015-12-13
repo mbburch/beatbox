@@ -11,7 +11,7 @@ let note_1;
 let note_2;
 let note_3;
 
-before(function () {
+beforeEach(function () {
   note_1 = new Note(Date.now() + 1000);
   note_2 = new Note(Date.now() + 2000);
   note_3 = new Note(Date.now() + 3000);
@@ -36,5 +36,17 @@ describe('Column', function () {
     assert.equal(column.activeNote(), note_1);
     note_1.strike();
     assert.equal(column.activeNote(), note_2);
+  });
+
+  it('can activate the active note', function () {
+    assert.equal(note_1.size, 10);
+    assert.equal(note_2.size, 10);
+    column.activateNotes();
+    assert.equal(note_1.size, 15);
+    assert.equal(note_2.size, 10);
+    note_1.strike();
+    column.activateNotes();
+    assert.equal(note_1.size, 10);
+    assert.equal(note_2.size, 15);
   });
 });
