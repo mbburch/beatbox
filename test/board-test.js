@@ -99,14 +99,14 @@ describe('Board', function () {
     assert.equal(note.size, 15);
   });
 
-  describe('creating columns', function () {
+  describe('for column', function () {
     it('can create from dots', function () {
       let dots     = ". . . .";
       let interval = 250;
       let button   = 106;
       let xvar     = 90;
       let time     = board.startTime;
-      let column = board.createColumn(dots, interval, button, xvar);
+      let column   = board.createColumn(dots, interval, button, xvar);
       assert.equal(column.notes[0].targetTime, time + 3000);
     });
   });
