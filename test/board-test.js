@@ -30,10 +30,10 @@ describe('Board', function () {
 
   it('shouldn\'t keep notes between games', function () {
     board.start();
-    var noteLength = board.notes.left.length;
+    var noteLength = board.getNotes().length;
     board.end();
     board.start();
-    assert.equal(board.notes.left.length, noteLength);
+    assert.equal(board.getNotes().length, noteLength);
     assert.isAbove(noteLength, 1);
   });
 
