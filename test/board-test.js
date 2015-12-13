@@ -100,7 +100,8 @@ describe('Board', function () {
   it('should make notes active if they are first in line', function () {
     let board = new Board();
     board.start();
-    let note = board.activeNote("left");
+    let note = board.notes["left"][0];
+    board.activateNotes("left");
     assert.equal(note.size, 15);
   });
 });
