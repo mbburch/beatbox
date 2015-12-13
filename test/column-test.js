@@ -8,6 +8,7 @@ const Note = require('../lib/note');
 
 let column;
 let note;
+
 before(function () {
   note = new Note(Date.now() + 1000);
   var note_2 = new Note(Date.now() + 2000);
