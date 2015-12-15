@@ -2,6 +2,12 @@
     box-sizing: border-box;
 }
 
+@media only screen and (max-width: 768px) {
+    [class*="col-"] {
+        width: 100%;
+    }
+}
+
 body {
     background-image: url("https://static.pexels.com/photos/2143/lights-party-dancing-music.jpg");
     background-size: cover;
