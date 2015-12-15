@@ -53,7 +53,7 @@ describe('Board', function () {
 
   it('can determine that game has ended', function () {
     board.start();
-    var endedTime = Date.now() + 10000;
+    var endedTime = Date.now() + 100000;
     assert.equal(board.ended(endedTime), true);
   });
 
