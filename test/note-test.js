@@ -1,7 +1,6 @@
 const chai = require('chai');
 const assert = chai.assert;
 
-const Board = require('../lib/board');
 const Note = require('../lib/note');
 
 describe('Note', function () {
@@ -39,14 +38,14 @@ describe('Note', function () {
   });
 
   it('generates a y coordinate from time', function () {
-    let time = (Date.now() + 1000)
+    let time = (Date.now() + 1000);
     let note = new Note(time);
     assert.isAbove(note.y(), 360-2);
     assert.isBelow(note.y(), 360+2);
   });
 
   it('should know how to render if slightly past target', function () {
-    let time = (Date.now() + -300)
+    let time = (Date.now() + -300);
     let note = new Note(time);
     assert.equal(note.renderable(), true);
     note.dead();
@@ -56,7 +55,7 @@ describe('Note', function () {
   });
 
   it('should know if it should render', function () {
-    let time = (Date.now() + 2500)
+    let time = (Date.now() + 2500);
     let note = new Note(time);
     assert.equal(note.renderable(), true);
   });
