@@ -1,8 +1,6 @@
 const chai = require('chai');
 const assert = chai.assert;
-const _ = require('lodash');
 
-const Board = require('../lib/board');
 const Column = require('../lib/column');
 const Note = require('../lib/note');
 
@@ -29,7 +27,7 @@ describe('Column', function () {
   });
 
   it('can have notes', function () {
-    assert.equal(note_1, column.notes[0])
+    assert.equal(note_1, column.notes[0]);
   });
 
   it('can get active note', function () {
@@ -52,7 +50,7 @@ describe('Column', function () {
 
   it('can kill notes past the target', function () {
     var note = new Note(Date.now() - 500);
-    column.notes.unshift(note)
+    column.notes.unshift(note);
     assert.equal(note.color, "black");
     assert.equal(note_1.color, "black");
     column.killNotes();

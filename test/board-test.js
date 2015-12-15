@@ -1,6 +1,5 @@
 const chai = require('chai');
 const assert = chai.assert;
-const _ = require('lodash');
 
 const Board = require('../lib/board');
 const Note = require('../lib/note');
@@ -64,7 +63,7 @@ describe('Board', function () {
     board.columns[0].notes[1] = new Note(Date.now() + 30);
     board.play(board.columns[0].inputButton);
     board.play(board.columns[0].inputButton);
-    assert.equal(board.score(), 4)
+    assert.equal(board.score(), 4);
   });
 
   it('can get best possible score', function () {
@@ -89,7 +88,6 @@ describe('Board', function () {
       let interval = 250;
       let button   = 110;
       let xvar     = 90;
-      let time     = board.startTime;
       let column   = board.createColumn(dots, interval, button, xvar);
       board.columns.push(column);
 
