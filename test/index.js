@@ -1,3 +1,4 @@
 require('./board-test');
-require('./note-test');
+require('./song-test');
 require('./column-test');
+require('./note-test');
