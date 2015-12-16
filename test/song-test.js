@@ -21,6 +21,13 @@ describe('Song', function () {
     assert.equal(250, song.timeInterval);
   });
 
+  it('should know whether the song has started', function () {
+    assert.equal(song.started, false);
+  });
+
+  xit('can create note', function () {
+  });
+
   xit('can create column', function () {
     let columnData = { button: 59, dots: ". . . ." };
     let column   = song.createColumn(columnData);
