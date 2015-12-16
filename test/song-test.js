@@ -64,8 +64,8 @@ describe('Song', function () {
     song.start();
     song.columns[0].notes[0] = new Note(Date.now() + 20);
     song.columns[0].notes[1] = new Note(Date.now() + 30);
-    song.getNotes()[0].strike();
-    song.getNotes()[1].strike();
+    song.play(song.columns[0].inputButton);
+    song.play(song.columns[0].inputButton);
     assert.equal(song.score(), 4);
   });
 
