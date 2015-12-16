@@ -21,4 +21,11 @@ describe('Board', function () {
     board.generateSongs();
     assert.notOk(board.currentSong());
   });
+
+  it('can start a song', function () {
+    board.generateSongs();
+    var song = board.songs[0];
+    board.start(song);
+    assert.equal(board.currentSong(), song);
+  });
 });
