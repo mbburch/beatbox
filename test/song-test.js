@@ -25,6 +25,13 @@ describe('Song', function () {
     assert.equal(song.started, false);
   });
 
+  it('can start', function () {
+    assert.equal(song.started, false);
+    song.start();
+    assert.equal(song.started, true);
+  });
+
+
   xit('can create note', function () {
   });
 
