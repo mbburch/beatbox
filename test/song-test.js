@@ -31,6 +31,12 @@ describe('Song', function () {
     assert.equal(song.started, true);
   });
 
+  it('knows the start time', function () {
+    var now = Date.now();
+    song.start();
+    assert.isAbove(song.startTime, now - 1);
+    assert.isBelow(song.startTime - 100, now);
+  });
 
   xit('can create note', function () {
   });
