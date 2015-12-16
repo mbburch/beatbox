@@ -12,8 +12,8 @@ let song;
 beforeEach(function () {
   column_1 = { button: 106, dots: ". . .   " };
   column_2 = { button: 107, dots: " . . ..." };
-  let columns = [column_1, column_2];
-  song = new Song(columns, 60, 4);
+  let data = [column_1, column_2];
+  song = new Song(data, 60, 4);
 });
 
 describe('Song', function () {
@@ -53,5 +53,10 @@ describe('Song', function () {
 
     assert.equal(column.notes[0].targetTime, song.startTime + 3000);
     assert.equal(column.notes[1].targetTime, song.startTime + 3500);
+  });
+
+  it('can get all notes', function () {
+    song.start();
+    assert.equal(song.getNotes().length, 8);
   });
 });
