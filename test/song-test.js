@@ -59,4 +59,13 @@ describe('Song', function () {
     song.start();
     assert.equal(song.getNotes().length, 8);
   });
+
+  it('can get score', function () {
+    song.start();
+    song.columns[0].notes[0] = new Note(Date.now() + 20);
+    song.columns[0].notes[1] = new Note(Date.now() + 30);
+    song.getNotes()[0].strike();
+    song.getNotes()[1].strike();
+    assert.equal(song.score(), 4);
+  });
 });
