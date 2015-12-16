@@ -107,7 +107,7 @@
 	  imageObj.onload = function () {
 	    ctx.drawImage(imageObj, 40, 250);
 	  };
-	  imageObj.src = '../images/gesture.png';
+	  imageObj.src = 'beatbox/images/gesture.png';
 	  ctx.fillStyle = "Black";
 	  ctx.font = "50pt VT323";
 	  ctx.fillText("GAME OVER", 60, 150);
