@@ -38,7 +38,12 @@ describe('Song', function () {
     assert.isBelow(song.startTime - 100, now);
   });
 
-  xit('can create note', function () {
+  it('can create note', function () {
+    song.start();
+    let note = song.createNote(1000);
+    var targetTime = (Date.now() + 1000);
+    assert.isAbove(note.targetTime, targetTime-2);
+    assert.isBelow(note.targetTime, targetTime+2);
   });
 
   xit('can create column', function () {
