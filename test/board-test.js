@@ -16,4 +16,9 @@ describe('Board', function () {
     board.startSong(board.songs[0]);
     assert.equal(board.songs[0].startTime, Date.now());
   });
+
+  it('can tell that no song has start by default', function () {
+    board.generateSongs();
+    assert.notOk(board.currentSong());
+  });
 });
