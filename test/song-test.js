@@ -46,11 +46,12 @@ describe('Song', function () {
     assert.isBelow(note.targetTime, targetTime+2);
   });
 
-  xit('can create column', function () {
+  it('can create column', function () {
+    song.start();
     let columnData = { button: 59, dots: ". . . ." };
-    let column   = song.createColumn(columnData);
+    let column     = song.createColumn(columnData);
 
-    assert.equal(column.notes[0].targetTime, time + 3000);
-    assert.equal(column.notes[1].targetTime, time + 3500);
+    assert.equal(column.notes[0].targetTime, song.startTime + 3000);
+    assert.equal(column.notes[1].targetTime, song.startTime + 3500);
   });
 });
