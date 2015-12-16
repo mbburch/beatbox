@@ -68,4 +68,9 @@ describe('Song', function () {
     song.getNotes()[1].strike();
     assert.equal(song.score(), 4);
   });
+
+  it('can get perfect score', function () {
+    song.start();
+    assert.equal(song.perfectScore(), 24);
+  });
 });
