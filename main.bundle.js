@@ -305,7 +305,7 @@
 	};
 
 	Board.prototype.highscore = function (bestscore) {
-	  if (bestscore !== "null") {
+	  if (bestscore !== null) {
 	    if (this.score() > parseInt(bestscore)) {
 	      localStorage.setItem("bestscore", this.score());
 	    }
