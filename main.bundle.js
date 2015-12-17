@@ -67,36 +67,28 @@
 	  alert("This game is not mobile compatible. Try it on your computer!");
 	}
 
-	function game() {
-	  board.start();
-	  document.getElementById("score").innerHTML = "";
-	  requestAnimationFrame(function gameLoop() {
-	    if (board.ended() === false) {
-	      board.tick(ctx);
-	      renderScore();
-	      requestAnimationFrame(gameLoop);
-	    } else {
-	      board.end(ctx);
-	      endGame();
-	      console.log(Date.now());
-	      document.getElementById('beats').pause();
-	      renderScore();
-	    }
-	  }, 16);
-	}
-
-	function startGame() {
-	  var gameButton = document.getElementById('game-start');
-	  gameButton.addEventListener('click', function () {
-	    if (!board.started) {
-	      document.addEventListener('keypress', keyPressHandler, false);
-	      document.getElementById('beats').currentTime = 0;
-	      document.getElementById('beats').play();
-	      setTimeout(function () {
-	        game();
-	      }, 80);
-	    }
-	  });
+	function game(song) {
+	  if (!board.currentSong()) {
+	    var track = document.getElementById(song.trackName);
+	    track.play();
+	    setTimeout(function () {
+	      board.start(song);
+	      requestAnimationFrame(function gameLoop() {
+	        if (board.currentSong()) {
+	          song.tick(ctx);
+	          renderScore(song);
+	          requestAnimationFrame(gameLoop);
+	        } else {
+	          board.stop(song);
+	          track.pause();
+	          track.currentTime = 0;
+	          endGame();
+	          renderScore(song);
+	          document.getElementById('beats').pause();
+	        }
+	      }, 16);
+	    }, song.startOffset);
+	  }
 	}
 
 	function endGame() {
@@ -112,10 +104,10 @@
 	  ctx.fillText("GAME OVER", 60, 150);
 	}
 
-	function renderScore() {
-	  var bestscore = localStorage.getItem("bestscore");
-	  board.highscore(bestscore);
-	  document.getElementById("score").innerHTML = "Score: " + board.score() + "/" + board.perfectScore();
+	function renderScore(song) {
+	  var bestscore = localStorage.getItem(song.trackName + "bestscore");
+	  song.highscore(bestscore);
+	  document.getElementById("score").innerHTML = "Score: " + song.score() + "/" + song.perfectScore();
 	  document.getElementById("highscore").innerHTML = "High Score: " + parseInt(bestscore);
 	}
 
@@ -124,7 +116,20 @@
 	  board.play(keyPressed);
 	}
 
-	startGame();
+	function loadSongs() {
+	  document.addEventListener('keypress', keyPressHandler, false);
+	  board.generateSongs();
+	  var game1 = document.getElementById('song-1');
+	  var game2 = document.getElementById('song-2');
+	  game1.addEventListener('click', function () {
+	    game(board.songs[0]);
+	  });
+	  game2.addEventListener('click', function () {
+	    game(board.songs[1]);
+	  });
+	}
+
+	loadSongs();
 
 /***/ },
 /* 2 */
@@ -132,104 +137,171 @@
 
 	'use strict';
 
-	var Note = __webpack_require__(3);
-	var Column = __webpack_require__(4);
-	var _ = __webpack_require__(5);
+	var Song = __webpack_require__(3);
+	var _ = __webpack_require__(6);
 
-	function Board(song) {
-	  this.started = false;
-	  this.columns = [];
-	  this.song = song || {
-	    columns: [{
-	      button: 104,
+	function Board() {
+	  this.songsData = [{
+	    data: [{
+	      button: 106,
 	      dots: ". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . "
 	    }, {
-	      button: 106,
-	      dots: ".   .   .   .   .   .   .   .   .   .   .   .   .   .   .   "
-	    }, {
 	      button: 107,
-	      dots: "       .       .       .       .       .       .       .    "
+	      dots: ".  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  "
 	    }, {
 	      button: 108,
-	      dots: "   .   .   .   .   .   .   .   .   .   .   .   .   .   .   ."
-	    }, {
-	      button: 59,
 	      dots: " . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ."
 	    }],
 	    bpm: 120,
-	    hypermeasureLength: 1
-	  };
+	    hypermeasureLegth: 1,
+	    startOffset: 80,
+	    trackName: "120bpm"
+	  }, {
+	    data: [{ button: 104, dots: "-----------.---------------.---------------.---------------.---------------.---------------.---------------.----------------.-.---.-.-.---.-.-.---.-.-.---.-.-.---.-.-.---.-.-.---.-.-.-" }, { button: 106, dots: "-.---.---.---.---.---.---.---.---.---.---.---.---.---.---.---.---.---.---.---.---.---.---.---.---.---.---.---.---.---.---.--------------------------------------------------------------" }, { button: 107, dots: "---.---------------.---------------.---------------.---------------.---------------.---------------.---------------.--------------------------------------------------------------------" }, { button: 108, dots: "-------.---------------.---------------.---------------.---------------.---------------.---------------.---------------.-----------.-------.-------.-------.-------.-------.-------.----" }, { button: 59, dots: "--------------------------------------------------------------------------------------------------------------------------------.-------.-------.-------.-------.-------.-------.-------" }],
+	    bpm: 179,
+	    hypermeasureLegth: 4,
+	    startOffset: 40,
+	    trackName: "180bpm"
+	  }];
 	}
 
-	Board.prototype.parseSong = function (song) {
-	  var xOffset = 0;
-	  var timeInterval = this.msInterval(song.bpm, song.hypermeasureLength);
-	  var self = this;
-	  self.columns = self.song.columns.map(function (data) {
-	    xOffset += self.xInterval();
-	    return self.columnFromDots(data, timeInterval, xOffset);
+	Board.prototype.generateSongs = function () {
+	  this.songs = this.songsData.map(function (songData) {
+	    return new Song(songData.data, songData.bpm, songData.hypermeasureLegth, songData.startOffset, songData.trackName);
 	  });
 	};
 
-	Board.prototype.columnFromDots = function (data, timeInterval, xOffset) {
-	  var dots = data.dots;
-	  var button = data.button;
-	  return this.createColumn(dots, timeInterval, button, xOffset);
+	Board.prototype.startSong = function (song) {
+	  song.start();
 	};
 
-	Board.prototype.xInterval = function () {
-	  var width = 360;
-	  var columnLength = Object.keys(this.song.columns).length;
-	  return width / (columnLength + 1);
+	Board.prototype.currentSong = function () {
+	  return _.find(this.songs, function (song) {
+	    return song.started === true;
+	  });
 	};
 
-	Board.prototype.msInterval = function (bpm, hypermeasureLength) {
+	Board.prototype.start = function (song) {
+	  if (!this.currentSong()) {
+	    return song.start();
+	  }
+	};
+
+	Board.prototype.stop = function (song) {
+	  song.stop();
+	};
+
+	Board.prototype.play = function (input) {
+	  if (this.currentSong()) {
+	    this.currentSong().play(input);
+	  }
+	};
+
+	module.exports = Board;
+
+/***/ },
+/* 3 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var Note = __webpack_require__(4);
+	var Column = __webpack_require__(5);
+	var _ = __webpack_require__(6);
+
+	function Song(data, bpm, hypermeasureLength, startOffset, trackName) {
+	  this.timeInterval = this.timeInterval(bpm, hypermeasureLength);
+	  this.xInterval = 360 / (data.length + 1);
+	  this.startOffset = startOffset;
+	  this.trackName = trackName;
+	  this.data = data;
+	  this.started = false;
+	}
+
+	Song.prototype.timeInterval = function (bpm, hypermeasureLength) {
 	  var minuteInMs = 60000;
 	  return minuteInMs / bpm / hypermeasureLength;
 	};
 
-	Board.prototype.createColumn = function (dots, interval, button, xvar) {
-	  var notes = this.createNotes(dots, interval);
-	  return new Column(parseInt(button), xvar, notes);
+	Song.prototype.start = function () {
+	  this.started = true;
+	  this.startTime = Date.now();
+	  this.createColumns();
+	  this.endTime = this.getEndTime();
+	  return true;
 	};
 
-	Board.prototype.createNotes = function (dots, interval) {
-	  var notes = [];
-	  var offset = 3000;
-	  for (var i = 0; i < dots.length; i++) {
-	    if (dots[i] === ".") {
-	      var note = this.createNote(offset);
-	      notes.push(note);
-	    }
-	    offset += interval;
-	  }
-
-	  return notes;
+	Song.prototype.stop = function () {
+	  this.started = false;
 	};
 
-	Board.prototype.createNote = function (offset) {
+	Song.prototype.createNote = function (offset) {
 	  var targetTime = this.startTime + offset;
 	  return new Note(targetTime);
 	};
 
-	Board.prototype.start = function () {
-	  this.columns = [];
-	  this.started = true;
-	  this.startTime = Date.now();
-	  this.parseSong(this.song);
-	  this.endTime = this.getEndTime();
+	Song.prototype.createColumns = function () {
+	  var self = this;
+	  var xval = 0;
+	  self.columns = self.data.map(function (columnData) {
+	    xval += self.xInterval;
+	    return self.createColumn(columnData, xval);
+	  });
 	};
 
-	Board.prototype.tick = function (context) {
+	Song.prototype.createColumn = function (columnData, xval) {
+	  var notes = [];
+	  var offset = 3000;
+	  for (var i = 0; i < columnData.dots.length; i++) {
+	    if (columnData.dots[i] === ".") {
+	      var note = this.createNote(offset);
+	      notes.push(note);
+	    }
+	    offset += this.timeInterval;
+	  }
+	  var column = new Column(parseInt(columnData.button), xval, notes);
+	  return column;
+	};
+
+	Song.prototype.getNotes = function () {
+	  var notesOut = [];
+	  this.columns.forEach(function (column) {
+	    column.notes.forEach(function (note) {
+	      notesOut.push(note);
+	    });
+	  });
+	  return notesOut;
+	};
+
+	Song.prototype.play = function (button) {
+	  var column = _.find(this.columns, { inputButton: button });
+	  var note = column.activeNote();
+	  if (note) {
+	    note.strike();
+	  }
+	};
+
+	Song.prototype.score = function () {
+	  return this.getNotes().reduce(function (sum, note) {
+	    return sum + (note.score || 0);
+	  }, 0);
+	};
+
+	Song.prototype.perfectScore = function () {
+	  return this.getNotes().length * 3;
+	};
+
+	Song.prototype.tick = function (context) {
 	  this.drawBoard(context);
 	  this.columns.forEach(function (column) {
 	    column.activateNotes();
 	    column.killNotes();
 	    column.renderNotes(context);
 	  });
+	  this.end();
 	};
 
-	Board.prototype.drawBoard = function (context) {
+	Song.prototype.drawBoard = function (context) {
 	  context.clearRect(0, 0, 360, 720);
 	  context.fillStyle = "red";
 	  context.fillRect(0, 175, 360, 10);
@@ -244,32 +316,13 @@
 	  });
 	};
 
-	Board.prototype.play = function (button) {
-	  var column = _.find(this.columns, { inputButton: button });
-	  var note = column.activeNote();
-	  if (note) {
-	    note.strike();
+	Song.prototype.end = function () {
+	  if (Date.now() > this.endTime) {
+	    this.stop();
 	  }
 	};
 
-	Board.prototype.end = function (context) {
-	  this.started = false;
-	  if (context) {
-	    this.drawBoard(context);
-	  }
-	  return this.score();
-	};
-
-	Board.prototype.ended = function (time) {
-	  time = time || Date.now();
-	  if (time >= this.endTime) {
-	    return true;
-	  } else {
-	    return false;
-	  }
-	};
-
-	Board.prototype.getEndTime = function () {
+	Song.prototype.getEndTime = function () {
 	  var notes = this.getNotes();
 	  var sortedNotes = _.sortBy(notes, function (note) {
 	    return note.targetTime;
@@ -279,42 +332,20 @@
 	  return endTime;
 	};
 
-	Board.prototype.getNotes = function () {
-	  var notesOut = [];
-	  this.columns.forEach(function (column) {
-	    column.notes.forEach(function (note) {
-	      notesOut.push(note);
-	    });
-	  });
-	  return notesOut;
-	};
-
-	Board.prototype.score = function () {
-	  var sum = 0;
-	  this.getNotes().forEach(function (note) {
-	    sum = sum + (note.score || 0);
-	  });
-	  return sum;
-	};
-
-	Board.prototype.perfectScore = function () {
-	  return this.getNotes().length * 3;
-	};
-
-	Board.prototype.highscore = function (bestscore) {
+	Song.prototype.highscore = function (bestscore) {
 	  if (bestscore !== null) {
 	    if (this.score() > parseInt(bestscore)) {
-	      localStorage.setItem("bestscore", this.score());
+	      localStorage.setItem(this.trackName + "bestscore", this.score());
 	    }
 	  } else {
-	    localStorage.setItem("bestscore", this.score());
+	    localStorage.setItem(this.trackName + "bestscore", this.score());
 	  }
 	};
 
-	module.exports = Board;
+	module.exports = Song;
 
 /***/ },
-/* 3 */
+/* 4 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -404,12 +435,12 @@
 	module.exports = Note;
 
 /***/ },
-/* 4 */
+/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _ = __webpack_require__(5);
+	var _ = __webpack_require__(6);
 
 	function Column(inputButton, x, notes) {
 	  this.inputButton = inputButton;
@@ -444,7 +475,7 @@
 	module.exports = Column;
 
 /***/ },
-/* 5 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(module, global) {/**
@@ -12799,10 +12830,10 @@
 	  }
 	}.call(this));
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)(module), (function() { return this; }())))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)(module), (function() { return this; }())))
 
 /***/ },
-/* 6 */
+/* 7 */
 /***/ function(module, exports) {
 
 	module.exports = function(module) {
