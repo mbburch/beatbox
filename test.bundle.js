@@ -235,6 +235,16 @@
 	  return this.getNotes().length * 3;
 	};
 
+	Board.prototype.highscore = function (bestscore) {
+	  if (parseInt(bestscore) !== null) {
+	    if (this.score() > parseInt(bestscore)) {
+	      localStorage.setItem("bestscore", this.score());
+	    }
+	  } else {
+	    localStorage.setItem("bestscore", this.score());
+	  }
+	};
+
 	module.exports = Board;
 
 /***/ },

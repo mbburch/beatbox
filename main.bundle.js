@@ -107,14 +107,17 @@
 	  imageObj.onload = function () {
 	    ctx.drawImage(imageObj, 40, 250);
 	  };
-	  imageObj.src = '/images/gesture.png';
+	  imageObj.src = './images/gesture.png';
 	  ctx.fillStyle = "Black";
 	  ctx.font = "50pt VT323";
 	  ctx.fillText("GAME OVER", 60, 150);
 	}
 
 	function renderScore() {
+	  var bestscore = localStorage.getItem("bestscore");
+	  board.highscore(bestscore);
 	  document.getElementById("score").innerHTML = "Score: " + board.score() + "/" + board.perfectScore();
+	  document.getElementById("highscore").innerHTML = "High Score: " + parseInt(bestscore);
 	}
 
 	function keyPressHandler(event) {
@@ -297,6 +300,16 @@
 
 	Board.prototype.perfectScore = function () {
 	  return this.getNotes().length * 3;
+	};
+
+	Board.prototype.highscore = function (bestscore) {
+	  if (parseInt(bestscore) !== null) {
+	    if (this.score() > parseInt(bestscore)) {
+	      localStorage.setItem("bestscore", this.score());
+	    }
+	  } else {
+	    localStorage.setItem("bestscore", this.score());
+	  }
 	};
 
 	module.exports = Board;
