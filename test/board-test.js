@@ -28,4 +28,12 @@ describe('Board', function () {
     board.start(song);
     assert.equal(board.currentSong(), song);
   });
+
+  it('doesn\'t list current song once song has finished', function () {
+    board.generateSongs();
+    var song = board.songs[0];
+    board.start(song);
+    board.stop(song);
+    assert.notOk(board.currentSong());
+  });
 });
