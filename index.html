@@ -7,8 +7,8 @@
   <title>Game Time</title>
 </head>
 <body>
-
-  <audio src="./sounds/120Bpm_64kb.mp3" id="beats" preload="auto"></audio>
+  <audio id="120bpm" src="./sounds/120bpm.mp3" preload="auto"></audio>
+  <audio id="180bpm" src="./sounds/180bpm.mp3" preload="auto"></audio>
   <container>
     <div class="row">
       <div class="col-4 instructions">
@@ -29,7 +29,8 @@
         </canvas>
       </div>
       <div class="col-4 info">
-        <button id="game-start">Start Game</button>
+        <button id="song-1">Easy</button>
+        <button id="song-2">Hard</button>
         <div class="scoreboard">
           <h1 id="score">Score: </h1><br>
           <h1 id="highscore">High Score: </h1>
