@@ -36,4 +36,16 @@ describe('Board', function () {
     board.stop(song);
     assert.notOk(board.currentSong());
   });
+
+  it('can\'t start a song when another song is going', function () {
+    board.generateSongs();
+    var song_1 = board.songs[0];
+    var song_2 = board.songs[1];
+    board.start(song_1);
+    assert.ok(song_1.started);
+    assert.notOk(song_2.started);
+    board.start(song_2);
+    assert.ok(song_1.started);
+    assert.notOk(song_2.started);
+  });
 });
