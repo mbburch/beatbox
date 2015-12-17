@@ -1,3 +1,5 @@
+http://g.recordit.co/johwK0VjNn.gif
+
 [![Stories in Ready](https://badge.waffle.io/russelleh/beatbox.svg?label=ready&title=Ready)](http://waffle.io/russelleh/beatbox)
 [![Throughput Graph](https://graphs.waffle.io/russelleh/beatbox/throughput.svg)](https://waffle.io/russelleh/beatbox/metrics)
 
@@ -5,7 +7,7 @@ This was a pair project in Module 4 at Turing School of Software & Design. The p
 
 ## Project Description
 
-Our goal for this project was to build a game that is playable in the browser. There is no server-side component for this project. We used client-side JavaScript to complete this project. Our game, Beatbox, is a spin-off of Guitar Hero and Tap Tap Revenge.
+Our goal for this project was to build a game that is playable in the browser. There is no server-side component for this project. We used client-side JavaScript to complete this project. Our game, Beatbox, is a spin-off of Guitar Hero and Tap Tap Revenge. Play our game here: [Beatbox](http://russelleh.github.io/beatbox)
 
 ## Learning Goals
 
