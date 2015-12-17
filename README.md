@@ -1,4 +1,4 @@
-http://g.recordit.co/johwK0VjNn.gif
+![Beatbox](http://g.recordit.co/johwK0VjNn.gif)
 
 [![Stories in Ready](https://badge.waffle.io/russelleh/beatbox.svg?label=ready&title=Ready)](http://waffle.io/russelleh/beatbox)
 [![Throughput Graph](https://graphs.waffle.io/russelleh/beatbox/throughput.svg)](https://waffle.io/russelleh/beatbox/metrics)
