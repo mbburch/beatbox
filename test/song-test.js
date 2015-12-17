@@ -2,7 +2,6 @@ const chai = require('chai');
 const assert = chai.assert;
 
 const Song = require('../lib/song');
-const Column = require('../lib/column');
 const Note   = require('../lib/note');
 
 let column_1;
