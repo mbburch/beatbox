@@ -94,7 +94,6 @@
 	      document.getElementById('beats').play();
 	      setTimeout(function () {
 	        game();
-	        console.log(Date.now());
 	      }, 80);
 	    }
 	  });
@@ -115,8 +114,6 @@
 
 	function renderScore() {
 	  var bestscore = localStorage.getItem("bestscore");
-	  console.log(bestscore);
-	  console.log(localStorage);
 	  board.highscore(bestscore);
 	  document.getElementById("score").innerHTML = "Score: " + board.score() + "/" + board.perfectScore();
 	  document.getElementById("highscore").innerHTML = "High Score: " + parseInt(bestscore);
